@@ -2,8 +2,9 @@
   "name": "xoxo",
   "version": "1.0.0",
   "description": "A code-breaking command-line game",
-  "main": "index.js",
+  "main": "xoxo.js",
   "scripts": {
+    "start": "node xoxo.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
