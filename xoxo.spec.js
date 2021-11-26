@@ -24,4 +24,8 @@ describe('xoxo', () => {
     const result = await cli([], '.')
     expect(result.code).toBe(0)
   })
+  it('results in "Hello, world!"', async () => {
+    const result = await cli([], '.')
+    expect(result.stdout.trim()).toBe('Hello, world!')
+  })
 })
