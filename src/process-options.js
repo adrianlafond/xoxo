@@ -1,13 +1,13 @@
 const defaultOptions = () => ({
   digits: 4,
-  variation: 'number',
+  word: false,
   repeats: false
 })
 
 function parseOptions(program) {
   program
     .option('-d, --digits <type>', 'number of digits or characters')
-    .option('-v, --variation <type>', 'number or word variation')
+    .option('-w, --word', 'writes the code as a word')
     .option('-r, --repeats', 'digits or characters can repeat')
   program.parse()
   return program.opts()
@@ -20,10 +20,8 @@ function initDigits(optDigits, options) {
   }
 }
 
-function initVariation(optVariation, options) {
-  if (optVariation === 'number' || optVariation === 'word') {
-    options.variation = optVariation
-  }
+function initWord(optWord, options) {
+  options.word = !!optWord
 }
 
 function initRepeats(optRepeats, options) {
@@ -35,7 +33,7 @@ function processOptions(program) {
   const programOpts = parseOptions(program)
 
   initDigits(programOpts.digits, options)
-  initVariation(programOpts.variation, options)
+  initWord(programOpts.word, options)
   initRepeats(programOpts.repeats, options)
 
   return options

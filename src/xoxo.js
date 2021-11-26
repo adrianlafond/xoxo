@@ -16,13 +16,13 @@ function print(message) {
 }
 
 function printRules() {
-  const { digits, variation, repeats } = options
-  const chars = variation === 'number' ? 'digits' : 'characters'
+  const { digits, word, repeats } = options
+  const chars = word ? 'characters' : 'digits'
   print(
     `We are playing XOXO with ${digits} ` +
     `${chars} ` +
-    `in the "${variation}" variation. ` +
-    `Digits ${repeats ? 'can' : 'cannot'} repeat. ` +
+    `in the "${word ? 'word' : 'number'}" variation. ` +
+    `${word ? 'Characters' : 'Digits'} ${repeats ? 'can' : 'cannot'} repeat. ` +
     `Type ${digits} ${chars} ` +
     'to hazard a guess, "help" for assistance, "rules" to repeat these rules, or ' +
     '"quit" to quit the game.'
@@ -30,21 +30,25 @@ function printRules() {
 }
 
 function printHelp() {
-  const { digits, variation } = options
-  const isNum = variation === 'number'
-  const char = isNum ? 'digit' : 'character'
+  const { digits, word } = options
+  const char = word ? 'character' : 'digit'
   print(
     `Take a crack at the code by entering ${digits} ${char}s. ` +
     'In response, you will be granted some clues:\n' +
     `  * "X" if a ${char} is both in the code in and the correct position;\n` +
     `  * "O" if a ${char} is in the code but not in the correct position;\n` +
     `  * "-" if a ${char} is not in the code at all.\n` +
-    `For example, if the code is "${isNum ? '1234' : 'HEAR'}" ` +
-    `and you enter "${isNum ? '8247' : 'BETA'}" then the ` +
-    `response would be "${isNum ? 'XO--' : 'XO--'}" because ` +
-    `${isNum ? '2' : 'E'} is in the code and in the correct position ("X"), ` +
-    `${isNum ? '4' : 'A'} is in the code but in the wrong position ("O"), ` +
-    `and the remaining ${char}s are not in the code ("-").`
+    `For example, if the code is "${word ? 'HEAR' : '1234'}" ` +
+    `and you enter "${word ? 'BETA' : '8247'}" then the ` +
+    'response would be "XO--" because ' +
+    `${word ? 'E' : '2'} is in the code and in the correct position ("X"), ` +
+    `${word ? 'A' : '4'} is in the code but in the wrong position ("O"), ` +
+    `and the remaining ${char}s are not in the code ("-").\n` +
+    'When starting a new game these options are available:\n' +
+    '  * -w --word     The code will be a word instead of a number\n' +
+    '  * -d --digits   Length of the code, from 3 to 5; default is 4\n' +
+    `  * -r --repeats  The code can have repeating ${char}s\n` +
+    '  * -m --maxTries Number of attemps to break the code; default is 12'
   )
 }
 

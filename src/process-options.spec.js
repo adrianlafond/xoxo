@@ -49,19 +49,13 @@ describe('options', () => {
     })
   })
 
-  describe('variation', () => {
-    it('sets the variation to "number" by default', () => {
-      expect(processOptions(mockProgram).variation).toBe('number')
+  describe('word variation', () => {
+    it('sets "word" to false by default', () => {
+      expect(processOptions(mockProgram).word).toBe(false)
     })
-    it('sets the variation to "number" when variation input is invalid', () => {
-      opts.variation = 'invalid'
-      expect(processOptions(mockProgram).variation).toBe('number')
-    })
-    ;['number', 'word'].forEach(input => {
-      it(`allows the variation to be set to "${input}"`, () => {
-        opts.variation = input
-        expect(processOptions(mockProgram).variation).toBe(input)
-      })
+    it('sets "word" to true if "word" is set', () => {
+      opts.word = true
+      expect(processOptions(mockProgram).word).toBe(true)
     })
   })
 
