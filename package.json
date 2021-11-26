@@ -1,0 +1,27 @@
+{
+  "name": "xoxo",
+  "version": "1.0.0",
+  "description": "A code-breaking command-line game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrianlafond/xoxo.git"
+  },
+  "keywords": [
+    "game",
+    "cli",
+    "code-breaking"
+  ],
+  "author": "Adrian Lafond <mail@adrianlafond.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adrianlafond/xoxo/issues"
+  },
+  "homepage": "https://github.com/adrianlafond/xoxo#readme",
+  "dependencies": {
+    "commander": "^8.3.0"
+  }
+}
