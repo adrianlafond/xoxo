@@ -1,9 +1,9 @@
 const path = require('path')
 const exec = require('child_process').exec
 
-describe('xoxo', () => {
+describe('xoxo >', () => {
   // See https://fireflysemantics.medium.com/unit-testing-commander-scripts-with-jest-bc32465709d6
-  function cli (args, cwd = '.') {
+  function cli(args, cwd = '.') {
     return new Promise(resolve => {
       args = args.map(a => `${a}`).join(' ')
       exec(
@@ -30,7 +30,7 @@ describe('xoxo', () => {
     expect(result.stdout.includes('XOXO')).toBe(true)
   })
 
-  describe('options', () => {
+  describe('digits options', () => {
     it('plays with "4 digits" by default', async () => {
       const result = await cli([])
       expect(result.stdout.includes('4 digits')).toBe(true)
@@ -76,6 +76,27 @@ describe('xoxo', () => {
       expect(result3.stdout.includes('4 digits')).toBe(true)
       const result4 = await cli(['-d', 4.21])
       expect(result4.stdout.includes('4 digits')).toBe(true)
+    })
+  })
+
+  describe('variation option', () => {
+    it('sets the variation to "number" by default', async () => {
+      const result = await cli([])
+      expect(result.stdout.includes('"number" variation')).toBe(true)
+    })
+    it('sets the variation to "number" when variation input is invalid', async () => {
+      const result = await cli(['--variation', 'invalid'])
+      expect(result.stdout.includes('"number" variation')).toBe(true)
+    })
+    ;['number', 'word'].forEach(input => {
+      it(`allows the variation to be set to "${input}" with "-v"`, async () => {
+        const result = await cli(['-v', input])
+        expect(result.stdout.includes(`"${input}" variation`)).toBe(true)
+      })
+      it(`allows the variation to be set to "${input}" with "--variation"`, async () => {
+        const result = await cli(['--variation', input])
+        expect(result.stdout.includes(`"${input}" variation`)).toBe(true)
+      })
     })
   })
 })

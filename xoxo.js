@@ -12,11 +12,11 @@ const defaultOptions = () => ({
 })
 const options = defaultOptions()
 
-function print (message) {
+function print(message) {
   console.log(message)
 }
 
-function processOptions () {
+function processOptions() {
   program
     .option('-d, --digits <type>', 'number of digits or characters')
     .option('-v, --variation <type>', 'number or word variation')
@@ -26,16 +26,23 @@ function processOptions () {
 
   const programOpts = program.opts()
   initDigits(programOpts.digits)
+  initVariation(programOpts.variation)
 }
 
-function initDigits (optDigits) {
+function initDigits(optDigits) {
   const digits = +optDigits
   if (!isNaN(digits)) {
     options.digits = Math.max(3, Math.min(5, Math.round(digits)))
   }
 }
 
-function start () {
+function initVariation(optVariation) {
+  if (optVariation === 'number' || optVariation === 'word') {
+    options.variation = optVariation
+  }
+}
+
+function start() {
   program.version(pkg.version)
   processOptions()
   print('' +
