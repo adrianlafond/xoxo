@@ -1,0 +1,37 @@
+{
+  "name": "xoxo",
+  "version": "1.0.0",
+  "description": "A code-breaking command-line game",
+  "main": "xoxo.js",
+  "scripts": {
+    "start": "node xoxo.js",
+    "test": "npm run lint && jest",
+    "lint": "eslint --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrianlafond/xoxo.git"
+  },
+  "keywords": [
+    "game",
+    "cli",
+    "code-breaking"
+  ],
+  "author": "Adrian Lafond <mail@adrianlafond.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adrianlafond/xoxo/issues"
+  },
+  "homepage": "https://github.com/adrianlafond/xoxo#readme",
+  "dependencies": {
+    "commander": "^8.3.0"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.1",
+    "jest": "^27.3.1",
+    "standard": "^16.0.4"
+  }
+}
