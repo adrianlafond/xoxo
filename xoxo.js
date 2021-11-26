@@ -27,6 +27,7 @@ function processOptions() {
   const programOpts = program.opts()
   initDigits(programOpts.digits)
   initVariation(programOpts.variation)
+  initRepeats(programOpts.repeats)
 }
 
 function initDigits(optDigits) {
@@ -42,13 +43,19 @@ function initVariation(optVariation) {
   }
 }
 
+function initRepeats(optRepeats) {
+  options.repeats = optRepeats
+}
+
 function start() {
   program.version(pkg.version)
   processOptions()
   print('' +
     `We are playing XOXO with ${options.digits} ` +
     `${options.variation === 'number' ? 'digits' : 'characters'} ` +
-    `in the "${options.variation}" variation. Good luck!`
+    `in the "${options.variation}" variation. ` +
+    `${options.repeats ? 'Digits can repeat. ' : ''}` +
+    'Good luck!'
   )
 }
 

@@ -35,14 +35,6 @@ describe('xoxo >', () => {
       const result = await cli([])
       expect(result.stdout.includes('4 digits')).toBe(true)
     })
-    it('plays the "number" variation by default', async () => {
-      const result = await cli([])
-      expect(result.stdout.includes('"number" variation')).toBe(true)
-    })
-    it('does not play with repeated digits by default', async () => {
-      const result = await cli([])
-      expect(result.stdout.includes('Digits can repeat.')).toBe(false)
-    })
     ;[3, 4, 5].forEach(input => {
       it(`allows digits to be set to ${input} with "-d"`, async () => {
         const result = await cli(['-d', input])
@@ -97,6 +89,21 @@ describe('xoxo >', () => {
         const result = await cli(['--variation', input])
         expect(result.stdout.includes(`"${input}" variation`)).toBe(true)
       })
+    })
+  })
+
+  describe('repeats option', () => {
+    it('does not play with repeated digits by default', async () => {
+      const result = await cli([])
+      expect(result.stdout.includes('Digits can repeat.')).toBe(false)
+    })
+    it('optionally allows codes with repeated digits with "-r"', async () => {
+      const result = await cli(['-r'])
+      expect(result.stdout.includes('Digits can repeat.')).toBe(true)
+    })
+    it('optionally allows codes with repeated digits with "--repeats"', async () => {
+      const result = await cli(['--repeats'])
+      expect(result.stdout.includes('Digits can repeat.')).toBe(true)
     })
   })
 })
