@@ -25,41 +25,27 @@ describe('breakCode', () => {
     expect(result.error).toBeTruthy()
     expect(typeof result.error).toBe('string')
   })
-  it('returns "XXXX" if the test matches the code', () => {
+  it('returns null for error if test code is valid', () => {
     const result = breakCode('1234', '1234')
     expect(result.error).toBeNull()
-    expect(result.signal).toBe('XXXX')
   })
-  it('returns "----" if no digit in the test matches the code', () => {
-    const result = breakCode('1234', '5678')
-    expect(result.error).toBeNull()
-    expect(result.signal).toBe('----')
-  })
-  it('returns "XX--" if some digits are in the correct position but others are not in the code', () => {
-    const result = breakCode('1234', '5634')
-    expect(result.error).toBeNull()
-    expect(result.signal).toBe('XX--')
-  })
-  it('returns "XOO-" if a digit is in the correct position and two are in the ' +
-    'code but not in the correct position', () => {
-    const result = breakCode('1234', '0324')
-    expect(result.error).toBeNull()
-    expect(result.signal).toBe('XOO-')
-  })
-  it('returns "XXOO" if "repeats" is true and two digits are in the correct positions ' +
-    'and two are in the code but not in the correct position', () => {
-    const result = breakCode('2234', '3224')
-    expect(result.error).toBeNull()
-    expect(result.signal).toBe('XXOO')
-  })
-  it('returns "X---" for code "5029" and test code "5555"', () => {
-    const result = breakCode('5029', '5555')
-    expect(result.error).toBeNull()
-    expect(result.signal).toBe('X---')
-  })
-  it('returns "XXX-" for code "1398" and test code "1388"', () => {
-    const result = breakCode('1398', '1388')
-    expect(result.error).toBeNull()
-    expect(result.signal).toBe('XXX-')
+  it('returns appropriate signal given specific test codes', () => {
+    expect(breakCode('1234', '1234').signal).toBe('XXXX')
+    expect(breakCode('1234', '1235').signal).toBe('XXX-')
+    expect(breakCode('1234', '1256').signal).toBe('XX--')
+    expect(breakCode('1234', '1567').signal).toBe('X---')
+    expect(breakCode('1234', '5678').signal).toBe('----')
+
+    expect(breakCode('1234', '4123').signal).toBe('OOOO')
+    expect(breakCode('1234', '3412').signal).toBe('OOOO')
+    expect(breakCode('1234', '2341').signal).toBe('OOOO')
+
+    expect(breakCode('1234', '4444').signal).toBe('X---')
+    expect(breakCode('1234', '1444').signal).toBe('XX--')
+    expect(breakCode('1234', '1244').signal).toBe('XXX-')
+
+    expect(breakCode('1234', '1111').signal).toBe('X---')
+    expect(breakCode('1234', '1112').signal).toBe('XO--')
+    expect(breakCode('1234', '1123').signal).toBe('XOO-')
   })
 })
