@@ -97,18 +97,39 @@ function handleInput(inputRaw) {
   }
 }
 
+function handleLoss() {
+  print(
+    `You failed to break the code in ${options.attempts} attempts. ` +
+    'Reveal the code?'
+  )
+  readline.question(
+    '(yes/no) ',
+    inputRaw => {
+      const input = inputRaw.toString().toLowerCase()
+      if (input[0] === 'y') {
+        print(`>>>>> ${game.code}`)
+      }
+      quit()
+    }
+  )
+}
+
 function handleGameInput(input) {
-  const result = breakCode(game.code, input, options.word)
+  const result = breakCode(game.code, input, options.repeats, options.word)
   if (result.error) {
     print(result.error)
     requestInput()
   } else if (hasWon(result.signal)) {
-    print(`You've won after ${game.attempts + 1} attempt${game.attempts > 1 ? 's' : ''}!`)
+    print(`You won after ${game.attempts + 1} attempt${game.attempts > 1 ? 's' : ''}!`)
     quit()
   } else {
     game.attempts += 1
     print(`Result: ${result.signal}`)
-    requestInput()
+    if (game.attempts >= options.attempts) {
+      handleLoss()
+    } else {
+      requestInput()
+    }
   }
 }
 
