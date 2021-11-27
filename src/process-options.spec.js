@@ -14,11 +14,7 @@ describe('options', () => {
   })
 
   describe('digits', () => {
-<<<<<<< HEAD
-    it('plays with "4 digits" by default', () => {
-=======
     it('plays with 4 digits by default', () => {
->>>>>>> b66454929403b47f49fedc8194bcda215d0599e0
       expect(processOptions(mockProgram).digits).toBe(4)
     })
     ;[3, 4, 5].forEach(input => {
