@@ -57,4 +57,9 @@ describe('breakCode', () => {
     expect(result.error).toBeNull()
     expect(result.signal).toBe('X---')
   })
+  it('returns "XXX-" for code "1398" and test code "1388"', () => {
+    const result = breakCode('1398', '1388')
+    expect(result.error).toBeNull()
+    expect(result.signal).toBe('XXX-')
+  })
 })

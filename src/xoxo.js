@@ -60,9 +60,9 @@ function printHelp() {
   )
 }
 
-function quit() {
+function quit(message = 'Bye!') {
   readline.close()
-  print('Bye!')
+  print(message)
   process.exit()
 }
 
@@ -120,11 +120,10 @@ function handleGameInput(input) {
     print(result.error)
     requestInput()
   } else if (hasWon(result.signal)) {
-    print(`You won after ${game.attempts + 1} attempt${game.attempts > 1 ? 's' : ''}!`)
-    quit()
+    quit(`You won after ${game.attempts + 1} attempt${game.attempts > 1 ? 's' : ''}!`)
   } else {
     game.attempts += 1
-    print(`Result: ${result.signal}`)
+    print(`>>>>>: ${result.signal}`)
     if (game.attempts >= options.attempts) {
       handleLoss()
     } else {
