@@ -1,4 +1,4 @@
-const processOptions = require('./process-options')
+const { processOptions } = require('./process-options')
 
 describe('options', () => {
   let opts
@@ -14,7 +14,7 @@ describe('options', () => {
   })
 
   describe('digits', () => {
-    it('plays with "4 digits" by default', () => {
+    it('plays with 4 digits by default', () => {
       expect(processOptions(mockProgram).digits).toBe(4)
     })
     ;[3, 4, 5].forEach(input => {
@@ -66,6 +66,42 @@ describe('options', () => {
     it('optionally allows codes with repeated digits', () => {
       opts.repeats = true
       expect(processOptions(mockProgram).repeats).toBe(true)
+    })
+  })
+
+  describe('attempts', () => {
+    it('plays with 12 attempts by default', () => {
+      expect(processOptions(mockProgram).attempts).toBe(12)
+    })
+    ;[1, 6, 12, 18, 24, 100].forEach(input => {
+      it(`allows attempts to be set to ${input}`, () => {
+        opts.attempts = `${input}`
+        expect(processOptions(mockProgram).attempts).toBe(input)
+      })
+    })
+    ;[true, false, undefined, null, 'xxx'].forEach(input => {
+      it(`defaults invalid attempts "${input}" to 12`, () => {
+        opts.attempts = `${input}`
+        expect(processOptions(mockProgram).attempts).toBe(12)
+      })
+    })
+    it('does not allow attempts to be set lower than 1', () => {
+      opts.attempts = '0'
+      expect(processOptions(mockProgram).attempts).toBe(1)
+    })
+    it('does not constrain attempts to a maximum value', () => {
+      opts.attempts = '9999999'
+      expect(processOptions(mockProgram).attempts).toBe(9999999)
+    })
+    it('round values inputted for attempts', () => {
+      opts.attempts = '3.21'
+      expect(processOptions(mockProgram).attempts).toBe(3)
+      opts.attempts = '4.77'
+      expect(processOptions(mockProgram).attempts).toBe(5)
+      opts.attempts = '3.77'
+      expect(processOptions(mockProgram).attempts).toBe(4)
+      opts.attempts = '4.21'
+      expect(processOptions(mockProgram).attempts).toBe(4)
     })
   })
 })

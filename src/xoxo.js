@@ -2,10 +2,17 @@
 
 const { Command } = require('commander')
 const pkg = require('../package.json')
-const processOptions = require('./process-options')
+const { processOptions } = require('./process-options')
+const { makeCode } = require('./make-code')
+const { breakCode } = require('./break-code')
 
 const program = new Command()
 const options = processOptions(program)
+const game = {
+  attempts: 0,
+  code: ''
+}
+
 const readline = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
@@ -16,13 +23,14 @@ function print(message) {
 }
 
 function printRules() {
-  const { digits, word, repeats } = options
+  const { digits, word, repeats, attempts } = options
   const chars = word ? 'characters' : 'digits'
   print(
     `We are playing XOXO with ${digits} ` +
     `${chars} ` +
     `in the "${word ? 'word' : 'number'}" variation. ` +
     `${word ? 'Characters' : 'Digits'} ${repeats ? 'can' : 'cannot'} repeat. ` +
+    `You have ${attempts} attempts to break the code. ` +
     `Type ${digits} ${chars} ` +
     'to hazard a guess, "help" for assistance, "rules" to repeat these rules, or ' +
     '"quit" to quit the game.'
@@ -48,18 +56,23 @@ function printHelp() {
     '  * -w --word     The code will be a word instead of a number\n' +
     '  * -d --digits   Length of the code, from 3 to 5; default is 4\n' +
     `  * -r --repeats  The code can have repeating ${char}s\n` +
-    '  * -m --maxTries Number of attemps to break the code; default is 12'
+    '  * -a --attempts Number of attemps to break the code; default is 12'
   )
-}
-
-function requestInput() {
-  readline.question('? ', handleInput)
 }
 
 function quit() {
   readline.close()
   print('Bye!')
   process.exit()
+}
+
+function requestInput() {
+  readline.question(
+    game.attempts === 0
+      ? 'Code break attempt 1: '
+      : `${game.attempts + 1}: `,
+    handleInput
+  )
 }
 
 function handleInput(inputRaw) {
@@ -80,13 +93,62 @@ function handleInput(inputRaw) {
       requestInput()
       break
     default:
-      print(`You typed ${input.toString()}`)
-      readline.close()
+      handleGameInput(input)
   }
 }
 
-function start() {
+function handleLoss() {
+  print(
+    `You failed to break the code in ${options.attempts} attempts. ` +
+    'Reveal the code?'
+  )
+  readline.question(
+    '(yes/no) ',
+    inputRaw => {
+      const input = inputRaw.toString().toLowerCase()
+      if (input[0] === 'y') {
+        print(`>>>>> ${game.code}`)
+      }
+      quit()
+    }
+  )
+}
+
+function handleGameInput(input) {
+  const result = breakCode(game.code, input, options.repeats, options.word)
+  if (result.error) {
+    print(result.error)
+    requestInput()
+  } else if (hasWon(result.signal)) {
+    print(`You won after ${game.attempts + 1} attempt${game.attempts > 1 ? 's' : ''}!`)
+    quit()
+  } else {
+    game.attempts += 1
+    print(`Result: ${result.signal}`)
+    if (game.attempts >= options.attempts) {
+      handleLoss()
+    } else {
+      requestInput()
+    }
+  }
+}
+
+function hasWon(signal) {
+  let win = ''
+  while (win.length < options.digits) {
+    win += 'X'
+  }
+  return win === signal
+}
+
+async function start() {
   program.version(pkg.version)
+  const { error, code } = await makeCode(options)
+  if (error) {
+    print(error)
+    process.exit()
+  }
+  game.code = code
   printRules()
   requestInput()
 }
