@@ -1,9 +1,11 @@
 function breakCode(code, test, isWord = false) {
   if (isTestValid(code, test, isWord)) {
-    //
+    return { error: null, signal: 'XOXO' }
   } else {
     return {
-      error: `The test code "${test}" is not a valid for the current rules of the game.`,
+      error: isWord
+        ? `The test code must be a ${code.length}-letter word composed only of letters A-Z.`
+        : `The test code must be composed of exactly ${code.length} numbers.`,
       signal: null
     }
   }

@@ -4,6 +4,7 @@ const { Command } = require('commander')
 const pkg = require('../package.json')
 const { processOptions } = require('./process-options')
 const { makeCode } = require('./make-code')
+const { breakCode } = require('./break-code')
 
 const program = new Command()
 const options = processOptions(program)
@@ -59,14 +60,19 @@ function printHelp() {
   )
 }
 
-function requestInput() {
-  readline.question('? ', handleInput)
-}
-
 function quit() {
   readline.close()
   print('Bye!')
   process.exit()
+}
+
+function requestInput() {
+  readline.question(
+    game.attempts === 0
+      ? 'Code break attempt 1: '
+      : `${game.attempts + 1}: `,
+    handleInput
+  )
 }
 
 function handleInput(inputRaw) {
@@ -87,9 +93,31 @@ function handleInput(inputRaw) {
       requestInput()
       break
     default:
-      print(`You typed ${input.toString()}`)
-      readline.close()
+      handleGameInput(input)
   }
+}
+
+function handleGameInput(input) {
+  const result = breakCode(game.code, input, options.word)
+  if (result.error) {
+    print(result.error)
+    requestInput()
+  } else if (hasWon(result.signal)) {
+    print(`You've won after ${game.attempts + 1} attempt${game.attempts > 1 ? 's' : ''}!`)
+    quit()
+  } else {
+    game.attempts += 1
+    print(`Result: ${result.signal}`)
+    requestInput()
+  }
+}
+
+function hasWon(signal) {
+  let win = ''
+  while (win.length < options.digits) {
+    win += 'X'
+  }
+  return win === signal
 }
 
 async function start() {
