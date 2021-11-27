@@ -1,4 +1,4 @@
-const processOptions = require('./process-options')
+const { processOptions } = require('./process-options')
 
 describe('options', () => {
   let opts

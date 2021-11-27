@@ -49,4 +49,4 @@ function processOptions(program) {
   return options
 }
 
-module.exports = processOptions
+module.exports = { defaultOptions, processOptions }

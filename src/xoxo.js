@@ -2,7 +2,7 @@
 
 const { Command } = require('commander')
 const pkg = require('../package.json')
-const processOptions = require('./process-options')
+const { processOptions } = require('./process-options')
 
 const program = new Command()
 const options = processOptions(program)
