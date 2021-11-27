@@ -4,7 +4,7 @@
   "description": "A code-breaking command-line game",
   "main": "xoxo.js",
   "scripts": {
-    "start": "node xoxo.js",
+    "start": "node src/xoxo",
     "test": "npm run lint && jest",
     "lint": "eslint --fix"
   },
