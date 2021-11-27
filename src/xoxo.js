@@ -16,13 +16,14 @@ function print(message) {
 }
 
 function printRules() {
-  const { digits, word, repeats } = options
+  const { digits, word, repeats, attempts } = options
   const chars = word ? 'characters' : 'digits'
   print(
     `We are playing XOXO with ${digits} ` +
     `${chars} ` +
     `in the "${word ? 'word' : 'number'}" variation. ` +
     `${word ? 'Characters' : 'Digits'} ${repeats ? 'can' : 'cannot'} repeat. ` +
+    `You have ${attempts} attempts to break the code. ` +
     `Type ${digits} ${chars} ` +
     'to hazard a guess, "help" for assistance, "rules" to repeat these rules, or ' +
     '"quit" to quit the game.'
@@ -48,7 +49,7 @@ function printHelp() {
     '  * -w --word     The code will be a word instead of a number\n' +
     '  * -d --digits   Length of the code, from 3 to 5; default is 4\n' +
     `  * -r --repeats  The code can have repeating ${char}s\n` +
-    '  * -m --maxTries Number of attemps to break the code; default is 12'
+    '  * -a --attempts Number of attemps to break the code; default is 12'
   )
 }
 
