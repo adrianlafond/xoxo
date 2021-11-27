@@ -3,9 +3,15 @@
 const { Command } = require('commander')
 const pkg = require('../package.json')
 const { processOptions } = require('./process-options')
+const { makeCode } = require('./make-code')
 
 const program = new Command()
 const options = processOptions(program)
+const game = {
+  attempts: 0,
+  code: ''
+}
+
 const readline = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
@@ -86,8 +92,14 @@ function handleInput(inputRaw) {
   }
 }
 
-function start() {
+async function start() {
   program.version(pkg.version)
+  const { error, code } = await makeCode(options)
+  if (error) {
+    print(error)
+    process.exit()
+  }
+  game.code = code
   printRules()
   requestInput()
 }

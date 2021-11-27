@@ -1,9 +1,9 @@
 function makeCode(options) {
   return new Promise((resolve, reject) => {
     if (options.word) {
-      reject(new Error('Word codes are not available yet.'))
+      resolve({ error: 'Word codes are not available yet.', code: null })
     } else {
-      resolve(makeNumberCode(options))
+      resolve({ error: null, code: makeNumberCode(options) })
     }
   })
 }
