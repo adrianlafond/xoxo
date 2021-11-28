@@ -5,6 +5,18 @@ const defaultOptions = () => ({
   attempts: 12
 })
 
+function processOptions(program) {
+  const options = defaultOptions()
+  const programOpts = parseOptions(program)
+
+  initDigits(programOpts.digits, options)
+  initWord(programOpts.word, options)
+  initRepeats(programOpts.repeats, options)
+  initAttempts(programOpts.attempts, options)
+
+  return options
+}
+
 function parseOptions(program) {
   program
     .option('-d, --digits <value>', 'number of digits or characters')
@@ -35,18 +47,6 @@ function initAttempts(optAttempts, options) {
   if (!isNaN(attempts)) {
     options.attempts = Math.max(1, Math.round(attempts))
   }
-}
-
-function processOptions(program) {
-  const options = defaultOptions()
-  const programOpts = parseOptions(program)
-
-  initDigits(programOpts.digits, options)
-  initWord(programOpts.word, options)
-  initRepeats(programOpts.repeats, options)
-  initAttempts(programOpts.attempts, options)
-
-  return options
 }
 
 module.exports = { defaultOptions, processOptions }

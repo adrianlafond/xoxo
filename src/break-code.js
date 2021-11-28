@@ -17,7 +17,7 @@ function breakCode(code, test, repeats = false, isWord = false) {
 function writeSignal(codeStr, testStr) {
   let signal = ''
   const code = codeStr.split('')
-  const test = testStr.split('')
+  const test = testStr.toUpperCase().split('')
 
   // Find correct digits in correct positions.
   for (let i = code.length - 1; i >= 0; i--) {
@@ -48,7 +48,7 @@ function writeSignal(codeStr, testStr) {
 
 function isTestValid(code, test, isWord) {
   if (isWord) {
-    return new RegExp(`^\\[a-z]{${code.length}}$`, 'i').test(test)
+    return new RegExp(`^[a-z]{${code.length}}$`, 'i').test(test)
   }
   return new RegExp(`^\\d{${code.length}}$`).test(test)
 }

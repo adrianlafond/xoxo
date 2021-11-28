@@ -2,7 +2,7 @@ const path = require('path')
 const exec = require('child_process').exec
 
 // See https://fireflysemantics.medium.com/unit-testing-commander-scripts-with-jest-bc32465709d6
-module.exports = (args, cwd = '.') => {
+module.export = (args, cwd = '.') => {
   return new Promise(resolve => {
     args = args.map(a => `${a}`).join(' ')
     exec(
